@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
+//@Repository
 public interface TestDao extends JpaRepository<Article,Long> {
 
     @Query("from Article a order by a.createTime desc")

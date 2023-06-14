@@ -1,6 +1,7 @@
 package com.gm.webbackend.common;
 
 public class HeadBO {
+    //页面返回值放对象，不要放string
     Object msg;
     String code;
     int status;

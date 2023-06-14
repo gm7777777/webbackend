@@ -116,7 +116,80 @@
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongodb-driver</artifactId>
+            <version>3.11.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>bson</artifactId>
+            <version>3.11.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>Mongodb-driver-core</artifactId>
+            <version>3.11.2</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.15</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <!--开发环境-->
+            <id>dev</id>
+            <properties>
+                <dev.environment>dev</dev.environment>
+                <mongodb.ip>192.168.0.131</mongodb.ip>
+                <mongodb.port>27017</mongodb.port>
+                <mongodb.user>gm</mongodb.user>
+                <mongodb.pwd>119618949@gm</mongodb.pwd>
+                <file.path>E:/Project_WorkSpace/commondocs/</file.path>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <!--生产环境-->
+            <id>test</id>
+            <properties>
+                <dev.environment>test</dev.environment>
+            </properties>
+        </profile>
+        <profile>
+            <!--生产环境-->
+            <id>prod</id>
+            <properties>
+                <dev.environment>prod</dev.environment>
+                <mongodb.ip>localhost</mongodb.ip>
+                <mongodb.port>27017</mongodb.port>
+                <mongodb.user>gm</mongodb.user>
+                <mongodb.pwd>119618949@gm</mongodb.pwd>
+                <file.path>/home/commondocs/</file.path>
+            </properties>
+        </profile>
+    </profiles>
+
 
     <build>
         <finalName>oasys</finalName>
@@ -135,6 +208,36 @@
                         <artifactId>springloaded</artifactId>
                         <version>1.2.7.RELEASE</version>
                     </dependency>
+
+
+                    <!--<dependency>-->
+                        <!--<groupId>org.mongodb</groupId>-->
+                        <!--<artifactId>mongo-java-driver</artifactId>-->
+                        <!--<version>3.0.4</version>-->
+                    <!--</dependency>-->
+                    <!--<dependency>-->
+                        <!--<groupId>org.springframework.data</groupId>-->
+                        <!--<artifactId>spring-data-mongodb</artifactId>-->
+                        <!--<version>2.1.6.RELEASE</version>-->
+                    <!--</dependency>-->
+                    <!--<dependency>-->
+                        <!--<groupId>org.springframework.boot</groupId>-->
+                        <!--<artifactId>spring-boot-starter-data-mongodb</artifactId>-->
+                        <!--<version>2.1.6.RELEASE</version>-->
+                    <!--</dependency>-->
+                    <!--&lt;!&ndash;导入Lombok依赖&ndash;&gt;-->
+                    <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.projectlombok/lombok &ndash;&gt;-->
+                    <!--<dependency>-->
+                        <!--<groupId>org.projectlombok</groupId>-->
+                        <!--<artifactId>lombok</artifactId>-->
+                        <!--<version>1.18.12</version>-->
+                        <!--&lt;!&ndash;这里是设置作用域&ndash;&gt;-->
+                        <!--&lt;!&ndash;注释作用域，表明我想让它为全局使用&ndash;&gt;-->
+                        <!--&lt;!&ndash;<scope>provided</scope>&ndash;&gt;-->
+                    <!--</dependency>-->
+
+
+
                 </dependencies>
             </plugin>
             <plugin>
