@@ -25,10 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/Auth")
@@ -56,8 +53,9 @@ private MongoTemplate mongoTemplate;
     @RequestMapping("login")
     public String getLogin(@RequestBody String jsonStr){
         JSONObject obj = (JSONObject) JSON.parse(jsonStr);
-        String name = obj.getString("name");
-        String pwd = obj.getString("password");
+        JSONObject body = obj.getJSONObject("ctxBody");
+        String name = body.getString("name");
+        String pwd = body.getString("password");
         HeadBO bo = new HeadBO();
         if(null==name||null==pwd||"".equals(name)||"".equals(pwd)){
             bo.setCode("300");
@@ -80,7 +78,11 @@ private MongoTemplate mongoTemplate;
                 bo.setCode("200");
                 bo.setStatus(0);
                 //先暂时代替token使用
-                bo.setMsg(UUID.randomUUID());
+                bo.setMsg("登录成功!");
+                Map map = new HashMap();
+                map.put("token",UUID.randomUUID());// 目前没用
+                map.put("user",name);
+                bo.setData(UUID.randomUUID());
             }
 //            for(Document doc :data){
 //                if(BaseUtils.decode(doc.getString("pwd").getBytes()).equals(pwd)){
@@ -105,27 +107,31 @@ private MongoTemplate mongoTemplate;
     public String getReg(@RequestBody String jsonStr){
 //        this.jsonStr = jsonStr;
         JSONObject obj = (JSONObject) JSON.parse(jsonStr);
-        String name = obj.getString("name");
-        String pwd = obj.getString("password");
-        String email = obj.getString("email");
-        String phone = obj.getString("phonenum");
+        JSONObject body = obj.getJSONObject("ctxBody");
+        String name = body.getString("name");
+        String pwd = body.getString("password");
+        String email = body.getString("email");
+        String phone = body.getString("phonenum");
 
         HeadBO bo = new HeadBO();
         if(null==email||"".equals(email)){
             bo.setCode("300");
             bo.setStatus(1);
             bo.setMsg("邮箱不能为空！");
+            return JSON.toJSONString(bo);
         }
         if(null==phone||"".equals(phone)){
             bo.setCode("300");
             bo.setStatus(1);
             bo.setMsg("联系电话不能为空！");
+            return JSON.toJSONString(bo);
         }
 
         if(null==name||null==pwd||"".equals(name)||"".equals(pwd)){
             bo.setCode("300");
             bo.setStatus(1);
             bo.setMsg("登录名或者密码不能为空！");
+            return JSON.toJSONString(bo);
         }
         if(isExistByNam(name)){
 //            Bson nameCond = Filters.eq("name",name);
@@ -147,7 +153,7 @@ private MongoTemplate mongoTemplate;
                 s.append(r.nextInt(9));
             }
             update.set("auth",s.toString());
-            mongoTemplate.upsert(query,update,UserBO.class);
+            mongoTemplate.updateFirst(query,update,UserBO.class);
             bo.setCode("200");
             bo.setStatus(0);
             bo.setMsg("已注册！");
@@ -200,7 +206,8 @@ private MongoTemplate mongoTemplate;
             mongoTemplate.save(user);
             bo.setCode("200");
             bo.setStatus(0);
-            bo.setMsg(user.getId());
+            bo.setMsg("注册成功");
+            bo.setData(user.getId());
         }
         return JSON.toJSONString(bo);
     }
@@ -209,13 +216,14 @@ private MongoTemplate mongoTemplate;
     @RequestMapping("auth")
     public String getAuth(@RequestBody String jsonStr){
         JSONObject obj = (JSONObject) JSON.parse(jsonStr);
-        String name = obj.getString("name");
-        String num1 = obj.getString("num1");
-        String num2 = obj.getString("num2");
-        String num3 = obj.getString("num3");
-        String num4 = obj.getString("num4");
-        String num5 = obj.getString("num5");
-        String num6 = obj.getString("num6");
+        JSONObject body = obj.getJSONObject("ctxBody");
+        String name = body.getString("name");
+        String num1 = body.getString("num1");
+        String num2 = body.getString("num2");
+        String num3 = body.getString("num3");
+        String num4 = body.getString("num4");
+        String num5 = body.getString("num5");
+        String num6 = body.getString("num6");
 
         HeadBO bo = new HeadBO();
         if(isExistByNam(name)){
@@ -236,15 +244,17 @@ private MongoTemplate mongoTemplate;
 
                 Update update = new Update();
                 update.set("auth", "true");
-                mongoTemplate.upsert(query,update,UserBO.class);
+                mongoTemplate.updateFirst(query,update,UserBO.class);
 
                 bo.setCode("200");
                 bo.setStatus(0);
                 bo.setMsg("账户已授权");
+//                return JSON.toJSONString(bo);
             }else{
                 bo.setCode("300");
                 bo.setStatus(1);
                 bo.setMsg("授权码不匹配！");
+//                return JSON.toJSONString(bo);
             }
 //            if(!data.iterator().hasNext()){
 //                for(Document user:data){

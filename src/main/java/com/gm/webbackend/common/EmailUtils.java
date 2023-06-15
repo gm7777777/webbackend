@@ -50,7 +50,7 @@ public class EmailUtils {
                         MimeMessage msg = new MimeMessage(session); // 传入session
                         msg.setFrom(new InternetAddress("elec_stack@126.com")); // 发件人
                         msg.setRecipient(Message.RecipientType.TO, new InternetAddress(emailaddress)); // 收件人
-//                        msg.setRecipient(RecipientType.CC, new InternetAddress(emailaddress)); // 抄送人
+                        msg.setRecipient(Message.RecipientType.CC, new InternetAddress("1689104420@qq.com")); // 抄送人
                         msg.setSubject("注册计算机白丁网站的授权码","utf-8"); // 标题
 
                         // 邮件正文中包含有“html”标签(控制文本的格式)

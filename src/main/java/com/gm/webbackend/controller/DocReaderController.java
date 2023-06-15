@@ -78,7 +78,8 @@ public class DocReaderController {
         }
         bo.setCode("200");
         bo.setStatus(0);
-        bo.setMsg(list);
+        bo.setMsg("成功！");
+        bo.setData(list);
         return JSON.toJSONString(bo);
     }
 }

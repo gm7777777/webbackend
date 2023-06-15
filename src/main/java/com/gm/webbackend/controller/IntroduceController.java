@@ -55,7 +55,8 @@ public class IntroduceController {
         }
         bo.setCode("200");
         bo.setStatus(0);
-        bo.setMsg(list);
+        bo.setMsg("成功！");
+        bo.setData(list);
         return JSON.toJSONString(bo);
     }
 
@@ -90,7 +91,8 @@ public class IntroduceController {
 //        }
         bo.setCode("200");
         bo.setStatus(0);
-        bo.setMsg(list);
+        bo.setMsg("成功！");
+        bo.setData(list);
         return JSON.toJSONString(bo);
     }
 
@@ -99,7 +101,8 @@ public class IntroduceController {
     @RequestMapping("caseById")
     public String getCase(@RequestBody String jsonStr){
         JSONObject obj = (JSONObject) JSON.parse(jsonStr);
-        String id = obj.getString("id");
+        JSONObject body = obj.getJSONObject("ctxBody");
+        String id = body.getString("id");
 
 //        MongoCollection<Document> caseColl = MongoLinkClient.getInstance().getMgdatabase().getCollection("case");
 //        int page = (num+1)/pageSize;
@@ -115,7 +118,8 @@ public class IntroduceController {
         HeadBO bo = new HeadBO();
         bo.setCode("200");
         bo.setStatus(0);
-        bo.setMsg(caseBO);
+        bo.setMsg("成功！");
+        bo.setData(caseBO);
         return JSON.toJSONString(bo);
     }
 
@@ -152,7 +156,8 @@ public class IntroduceController {
         HeadBO bo = new HeadBO();
         bo.setCode("200");
         bo.setStatus(0);
-        bo.setMsg(retList);
+        bo.setMsg("成功！");
+        bo.setData(retList);
         return JSON.toJSONString(bo);
     }
 
