@@ -29,6 +29,8 @@ public class QuestionBO {
 
     int remarksnum;
 
+    String createDate;
+
 
     public String getId() {
         return id;
@@ -108,5 +110,13 @@ public class QuestionBO {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
     }
 }

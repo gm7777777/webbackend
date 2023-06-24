@@ -2,31 +2,27 @@ package com.gm.webbackend.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.databind.ser.Serializers;
 import com.gm.webbackend.bo.UserBO;
 import com.gm.webbackend.common.BaseUtils;
 import com.gm.webbackend.common.EmailUtils;
 import com.gm.webbackend.common.HeadBO;
-import com.gm.webbackend.config.MongoLinkClient;
-import com.gm.webbackend.service.TestService;
-import com.mongodb.client.FindIterable;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.Filters;
-import com.sun.org.apache.xalan.internal.xsltc.dom.FilterIterator;
-import org.bson.Document;
-import org.bson.conversions.Bson;
+//import com.mongodb.client.FindIterable;
+//import com.mongodb.client.MongoCollection;
+//import com.mongodb.client.model.Filters;
+//import com.sun.org.apache.xalan.internal.xsltc.dom.FilterIterator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
-import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/Auth")
 public class LoginController {
@@ -61,6 +57,7 @@ private MongoTemplate mongoTemplate;
             bo.setCode("300");
             bo.setStatus(1);
             bo.setMsg("登录名或者密码不能为空！");
+            return JSON.toJSONString(bo);
         }
 
 
@@ -83,6 +80,7 @@ private MongoTemplate mongoTemplate;
                 map.put("token",UUID.randomUUID());// 目前没用
                 map.put("user",name);
                 bo.setData(UUID.randomUUID());
+                return JSON.toJSONString(bo);
             }
 //            for(Document doc :data){
 //                if(BaseUtils.decode(doc.getString("pwd").getBytes()).equals(pwd)){
@@ -94,7 +92,7 @@ private MongoTemplate mongoTemplate;
 //            }
             bo.setCode("200");
             bo.setStatus(1);
-            bo.setMsg("用户未授权！");
+            bo.setMsg("登录密码错误或用户未授权！");
         }else{
             bo.setCode("200");
             bo.setStatus(1);
@@ -139,6 +137,14 @@ private MongoTemplate mongoTemplate;
 
             Query query = new Query();
             query.addCriteria(Criteria.where("name").is(name));
+            query.addCriteria(Criteria.where("auth").is("true"));
+            UserBO user = mongoTemplate.findOne(query,UserBO.class);
+            if(user!=null){
+                bo.setCode("300");
+                bo.setStatus(1);
+                bo.setMsg("用户已存在！");
+                return JSON.toJSONString(bo);
+            }
 //            query.addCriteria(Criteria.where("auth").is(true));
 //            UserBO user = mongoTemplate.findOne(query,UserBO.class);
 
@@ -153,7 +159,9 @@ private MongoTemplate mongoTemplate;
                 s.append(r.nextInt(9));
             }
             update.set("auth",s.toString());
-            mongoTemplate.updateFirst(query,update,UserBO.class);
+            Query q = new Query();
+            q.addCriteria(Criteria.where("name").is(name));
+            mongoTemplate.updateFirst(q,update,UserBO.class);
             bo.setCode("200");
             bo.setStatus(0);
             bo.setMsg("已注册！");
@@ -177,7 +185,15 @@ private MongoTemplate mongoTemplate;
 //                    user.put("auth",s.toString());
 //                }
 //                collection.insertOne(user);
+            try {
                 EmailUtils.createEmailWithAuthCode(EmailUtils.createSession(),s.toString(),email);
+            } catch (Exception e) {
+                bo.setCode("300");
+                bo.setStatus(1);
+                bo.setMsg("授权邮件发送失败！");
+                e.printStackTrace();
+            }
+//                EmailUtils.sendEmail(email,s.toString());
 //            }
 //            bo.setCode("200");
 //                   bo.setStatus(0);
@@ -206,8 +222,18 @@ private MongoTemplate mongoTemplate;
             mongoTemplate.save(user);
             bo.setCode("200");
             bo.setStatus(0);
-            bo.setMsg("注册成功");
+            bo.setMsg("已注册,授权后登录");
             bo.setData(user.getId());
+            try {
+                EmailUtils.createEmailWithAuthCode(EmailUtils.createSession(),s.toString(),email);
+            } catch (Exception e) {
+                bo.setCode("300");
+                bo.setStatus(1);
+                bo.setMsg("授权邮件发送失败！");
+                e.printStackTrace();
+//                bo.setData(user.getId());
+            }
+//            EmailUtils.sendEmail(email,s.toString());
         }
         return JSON.toJSONString(bo);
     }
@@ -248,7 +274,7 @@ private MongoTemplate mongoTemplate;
 
                 bo.setCode("200");
                 bo.setStatus(0);
-                bo.setMsg("账户已授权");
+                bo.setMsg("账户已授权,请重新登录");
 //                return JSON.toJSONString(bo);
             }else{
                 bo.setCode("300");

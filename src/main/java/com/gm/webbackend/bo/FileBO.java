@@ -17,6 +17,8 @@ public class FileBO {
 
     String path;
 
+    String author;
+
     public String getId() {
         return id;
     }
@@ -47,5 +49,13 @@ public class FileBO {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 }

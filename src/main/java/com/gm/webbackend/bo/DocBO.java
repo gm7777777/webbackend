@@ -17,7 +17,7 @@ public class DocBO {
 
     String name;
 
-    String section;
+    int section;
 
     String sectorcode;
 
@@ -49,11 +49,11 @@ public class DocBO {
         this.name = name;
     }
 
-    public String getSection() {
+    public int getSection() {
         return section;
     }
 
-    public void setSection(String section) {
+    public void setSection(int section) {
         this.section = section;
     }
 

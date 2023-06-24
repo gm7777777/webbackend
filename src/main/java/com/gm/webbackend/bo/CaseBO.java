@@ -33,6 +33,10 @@ public class CaseBO implements Serializable{
 
     Date projecttime;
 
+    String author;
+
+    String area;
+
     public String getId() {
         return id;
     }
@@ -111,5 +115,21 @@ public class CaseBO implements Serializable{
 
     public void setProjecttime(Date projecttime) {
         this.projecttime = projecttime;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
     }
 }

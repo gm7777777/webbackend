@@ -15,9 +15,16 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.6.RELEASE</version>
+        <version>1.5.4.RELEASE</version>
         <relativePath /> <!-- lookup parent from repository -->
     </parent>
+
+    <!--<parent>-->
+        <!--<groupId>org.springframework.boot</groupId>-->
+        <!--<artifactId>spring-boot-starter-parent</artifactId>-->
+        <!--<version>1.5.4.RELEASE</version>-->
+        <!--<relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;-->
+    <!--</parent>-->
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -162,8 +169,8 @@
                 <mongodb.ip>192.168.0.131</mongodb.ip>
                 <mongodb.port>27017</mongodb.port>
                 <mongodb.user>gm</mongodb.user>
-                <mongodb.pwd>119618949@gm</mongodb.pwd>
-                <file.path>E:/Project_WorkSpace/commondocs/</file.path>
+                <mongodb.pwd>119618949~gm</mongodb.pwd>
+                <file.path>file:E:/Project_WorkSpace/commondocs/</file.path>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -184,8 +191,8 @@
                 <mongodb.ip>localhost</mongodb.ip>
                 <mongodb.port>27017</mongodb.port>
                 <mongodb.user>gm</mongodb.user>
-                <mongodb.pwd>119618949@gm</mongodb.pwd>
-                <file.path>/home/commondocs/</file.path>
+                <mongodb.pwd>119618949~gm</mongodb.pwd>
+                <file.path>file:/home/commondocs/</file.path>
             </properties>
         </profile>
     </profiles>

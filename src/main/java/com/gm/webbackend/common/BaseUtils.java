@@ -14,12 +14,12 @@ public class BaseUtils {
 
     public static String encode(String tmp){
 
-        return String .valueOf(Base64.encodeBase64(tmp.getBytes()));
+        return new String(Base64.encodeBase64(tmp.getBytes()));
     }
 
 
     public static String decode(byte[] tmp){
-        return String.valueOf(Base64.decodeBase64(tmp));
+        return new String(Base64.decodeBase64(tmp));
     }
 
     public static Date transferString2Date(String s) {
@@ -32,5 +32,9 @@ public class BaseUtils {
         return date;
     }
 
+    public static String transferDate2String(Date temp){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(temp);
+    }
 
 }
